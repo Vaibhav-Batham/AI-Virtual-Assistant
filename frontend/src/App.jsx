@@ -1,10 +1,11 @@
-import { Routes, Route, Navigate } from "react-router-dom"; // Navigate import mat bhoolna
+import { Routes, Route, Navigate } from "react-router-dom"; 
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Customize from "./pages/Customize";
-import Home from "./pages/Home"; // Home import add karna
+import Home from "./pages/Home";
 import { useContext } from "react";
 import { userDataContext } from "./context/userContext";
+import Customize2 from "./pages/customize2";
 
 function App() {
   const { userData } = useContext(userDataContext);
@@ -26,7 +27,7 @@ function App() {
         path="/signup"
         element={
           userData
-            ? <Navigate to="/" replace />
+            ? <Navigate to="/customize" replace />
             : <SignUp />
         }
       />
@@ -36,18 +37,21 @@ function App() {
         path="/signin"
         element={
           userData
-            ? <Navigate to="/" replace />
+            ? <Navigate to="/customize" replace />
             : <SignIn />
         }
       />
 
+      {/* Customize route */}
       <Route
         path="/customize"
-        element={
-          !userData
-            ? <Customize />
-            : <Navigate to="/signin" replace />
-        }
+        element={<Customize />}
+      />
+
+      {/* Customize2 route */}
+      <Route
+        path="/customize2"
+        element={<Customize2 />}
       />
     </Routes>
   )

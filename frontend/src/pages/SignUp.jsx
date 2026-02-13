@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const { serverUrl,userData, setUserData} = useContext(userDataContext);
+  const { serverUrl, setUserData } = useContext(userDataContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -43,17 +43,21 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post(`${serverUrl}/api/auth/signup`, {
-        name: formData.fullName,
-        assistantName: formData.fullName + "'s Assistant",
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${serverUrl}/api/auth/signup`,
+        {
+          name: formData.fullName,
+          assistantName: formData.fullName + "'s Assistant",
+          email: formData.email,
+          password: formData.password,
+        },
+        { withCredentials: true } // ✅ important for cookie
+      );
 
       if (response.data.success) {
+        setUserData(response.data.user); // ✅ context update
         setSuccess("Account created successfully!");
-        setTimeout(() => navigate("/customize"), 2000);
-        setTimeout(() => navigate("/signin"), 2000);
+        navigate("/customize"); // ✅ directly go to customize
       } else {
         setError(response.data.message || "Signup failed.");
       }
